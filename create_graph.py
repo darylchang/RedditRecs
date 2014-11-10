@@ -58,7 +58,7 @@ for s1 in keys:
 print "Done thresholding edge_map"
 
 # Write edge map to an edge list file
-f = gzip.open('edge_list.txt', 'w')
+f = gzip.open('edge_list.txt.gz', 'w')
 for s1 in edge_map_new:
     for s2 in edge_map_new[s1]:
         if s2 > s1:
