@@ -62,5 +62,5 @@ f = gzip.open('edge_list.txt.gz', 'w')
 for s1 in edge_map_new:
     for s2 in edge_map_new[s1]:
         if s2 > s1:
-            f.write(s1, s2,'\n')
+            f.write(s1 + ' ' + s2 + '\n')
 f.close()

@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 
 print 'Reading edge list'
 G = nx.read_adjlist('edge_list.txt.gz')
+print len(G.edges())
 
 #first compute the best partition
 print 'Partitioning'
