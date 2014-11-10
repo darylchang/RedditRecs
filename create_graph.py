@@ -1,4 +1,3 @@
-import snap
 from random import randint
 
 nodes = open('subs_unique.dump', 'r')
@@ -15,6 +14,8 @@ for k in keys:
 
 edge_map = dict(dict_pairs)
 
+print "Done with edge_map skeleton"
+
 users = open('users_sorted.dump', 'r')
 current_subs = set()
 current_user = '0'
@@ -30,12 +31,17 @@ for line in users:
     current_user = l[0]
     current_subs.add(l[2])
 
+print "Done with users"
+
 for s1 in keys:
     total = 0
     for s2 in keys:
         total += edge_map[s1][s2]
     for s2 in keys:
-        edge_map[s1][s2] /= total
+        if total != 0:
+            edge_map[s1][s2] /= total
+
+print "Done normalizing edge_map"
 
 edge_map_new = edge_map
 THRESHOLD = 0.005
@@ -47,3 +53,13 @@ for s1 in keys:
         else:
             edge_map_new[s1][s2] = 1;
             edge_map_new[s2][s1] = 1;
+
+print "Done thresholding edge_map"
+
+# Write edge map to an edge list file
+f = open('edge_list.txt', 'w')
+for s1 in edge_map_new:
+    for s2 in edge_map_new[s1]:
+        if s2 > s1:
+            f.write('s1 s2\n')
+f.close()
