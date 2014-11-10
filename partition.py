@@ -8,7 +8,7 @@ G = nx.read_adjlist('edge_list.txt.gz')
 #first compute the best partition
 print 'Partitioning'
 partition = community.best_partition(G)
-print partition
+nx.write_adjlist(partition, 'partition_edge_list.txt.gz')
 
 #drawing
 size = float(len(set(partition.values())))
