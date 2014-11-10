@@ -1,3 +1,4 @@
+import gzip
 from random import randint
 
 nodes = open('subs_unique.dump', 'r')
@@ -57,7 +58,7 @@ for s1 in keys:
 print "Done thresholding edge_map"
 
 # Write edge map to an edge list file
-f = open('edge_list.txt', 'w')
+f = gzip.open('edge_list.txt', 'w')
 for s1 in edge_map_new:
     for s2 in edge_map_new[s1]:
         if s2 > s1:
