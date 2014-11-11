@@ -1,6 +1,7 @@
 import community
 import networkx as nx
 import matplotlib.pyplot as plt
+import pickle
 
 print 'Reading edge list'
 G = nx.read_adjlist('edge_list.txt.gz')
@@ -8,7 +9,8 @@ G = nx.read_adjlist('edge_list.txt.gz')
 #first compute the best partition
 print 'Partitioning'
 partition = community.best_partition(G)
-nx.write_adjlist(partition, 'partition_edge_list.txt.gz')
+print set(partition.values())
+pickle.dump(partition, open('partition.pickle', 'w'))
 
 #drawing
 # size = float(len(set(partition.values())))
