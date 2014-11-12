@@ -24,6 +24,9 @@ while todo:
 			clusters[clusterID] = [subreddit]
 		else:
 			clusters[clusterID].append(subreddit)
+	if len(clusters.items()) == 1:
+		final.append(currentSubgraph)
+		continue
 
 	for clusterID, nodes in clusters.items():
 		subgraph = currentSubgraph.subgraph(nodes)
