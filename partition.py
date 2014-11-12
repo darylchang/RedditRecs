@@ -4,24 +4,41 @@ import matplotlib.pyplot as plt
 import pickle
 
 print 'Reading edge list'
-G = nx.read_adjlist('edge_list.txt.gz')
+G = nx.read_adjlist('edge_list_smaller.txt')
+# G = nx.erdos_renyi_graph(2000, 0.02)
 
-#first compute the best partition
+# First compute the best partition
 print 'Partitioning'
-partition = community.best_partition(G)
-print set(partition.values())
-pickle.dump(partition, open('partition.pickle', 'w'))
 
-#drawing
-# size = float(len(set(partition.values())))
-# pos = nx.spring_layout(G)
-# count = 0.
-# for com in set(partition.values()) :
-#     count = count + 1.
-#     list_nodes = [nodes for nodes in partition.keys()
-#                                 if partition[nodes] == com]
-#     nx.draw_networkx_nodes(G, pos, list_nodes, node_size = 20,
-#                                 node_color = str(count / size))
+final = []
+todo = [G]
+deleted = 0
 
-# nx.draw_networkx_edges(G,pos, alpha=0.5)
-# plt.show()
+while todo:
+	currentSubgraph = todo.pop(0)
+	partition = community.best_partition(currentSubgraph)
+	clusters = {}
+	for subreddit in partition.keys():
+		clusterID = partition[subreddit]
+		if clusterID not in clusters:
+			clusters[clusterID] = [subreddit]
+		else:
+			clusters[clusterID].append(subreddit)
+
+	for clusterID, nodes in clusters.items():
+		subgraph = currentSubgraph.subgraph(nodes)
+		if len(subgraph.nodes()) < 10:
+			print "discarding sub with l=", len(subgraph.nodes())
+			deleted += len(subgraph.nodes())
+			continue
+		elif len(subgraph.nodes()) < 100:
+			print "adding sub with l=", len(subgraph.nodes())
+			final.append(subgraph)
+		else:
+			print "expanding sub with l=", len(subgraph.nodes())
+			todo.append(subgraph)
+
+pickle.dump(final, open('final_partition_subgraphs.pickle', 'w'))
+
+print [len(graph.nodes()) for graph in final]
+print deleted

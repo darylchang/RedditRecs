@@ -34,38 +34,36 @@ for line in users:
 
 print "Done with users"
 
-#for s1 in keys:
-#    total = 0
-#    for s2 in keys:
-#        total += edge_map[s1][s2]
-#    for s2 in keys:
-#        if total != 0:
-#            edge_map[s1][s2] /= total
-#
-#print "Done normalizing edge_map"
-
 for s1 in keys:
-	for s2 in keys:
-		if edge_map[s1][s2] != 0:
-			edge_map[s1][s2] = 1
+    total = 0.
+    for s2 in keys:
+        total += edge_map[s1][s2]
+    for s2 in keys:
+        if total != 0:
+            edge_map[s1][s2] /= total
 
-#edge_map_new = edge_map
-#THRESHOLD = 0
-#for s1 in keys:
-#    for s2 in keys:
-#        if (edge_map[s1][s2] < THRESHOLD and edge_map[s2][s1] < THRESHOLD):
-#            edge_map_new[s1][s2] = 0;
-#            edge_map_new[s2][s1] = 0;
-#        else:
-#            edge_map_new[s1][s2] = 1;
-#            edge_map_new[s2][s1] = 1;
+print "Done normalizing edge_map"
+
+# for s1 in keys:
+# 	for s2 in keys:
+# 		if edge_map[s1][s2] != 0:
+# 			edge_map[s1][s2] = 1
+
+edge_map_new = edge_map
+THRESHOLD = 5e-4
+for s1 in keys:
+   for s2 in keys:
+       if (edge_map[s1][s2] < THRESHOLD and edge_map[s2][s1] < THRESHOLD):
+           edge_map_new[s1][s2] = 0;
+       else:
+           edge_map_new[s1][s2] = 1;
 
 print "Done thresholding edge_map"
 
 # Write edge map to an edge list file
-f = gzip.open('edge_list.txt.gz', 'w')
-for s1 in edge_map:
-    for s2 in edge_map[s1]:
-        if s2 > s1 and edge_map[s1][s2] == 1:
+f = gzip.open('edge_list_smaller.txt.gz', 'w')
+for s1 in edge_map_new:
+    for s2 in edge_map_new[s1]:
+        if s2 > s1 and edge_map_new[s1][s2] == 1:
             f.write(s1 + ' ' + s2 + '\n')
 f.close()
