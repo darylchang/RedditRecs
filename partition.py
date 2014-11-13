@@ -5,7 +5,6 @@ import pickle
 
 print 'Reading edge list'
 G = nx.read_adjlist('edge_list_smaller.txt')
-# G = nx.erdos_renyi_graph(2000, 0.02)
 
 # First compute the best partition
 print 'Partitioning'

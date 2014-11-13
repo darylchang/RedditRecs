@@ -37,6 +37,20 @@ def draw_subgraphs(subgraphs):
 		plt.show()
 
 
+# Finds the node nearest to the point specified by x_c, y_c.
+# Used when coloring path length from node near center.
+def get_node_near_point(pos, x_c, y_c):
+	d_min = 1.0
+	n_center = 0
+	for n in pos:
+	    x,y =pos[n]
+	    d=(x-x_c)**2 + (y-y_c)**2
+	    if d < d_min:
+	        n_center = n
+	        d_min = d
+	return n_center
+
+
 def main():
 	subgraphs = load_file('final_partition_subgraphs.pickle')
 	draw_subgraphs(subgraphs)

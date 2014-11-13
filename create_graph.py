@@ -44,10 +44,6 @@ for s1 in keys:
 
 print "Done normalizing edge_map"
 
-# for s1 in keys:
-# 	for s2 in keys:
-# 		if edge_map[s1][s2] != 0:
-# 			edge_map[s1][s2] = 1
 
 edge_map_new = edge_map
 THRESHOLD = 5e-4
