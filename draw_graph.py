@@ -1,7 +1,6 @@
 import community
 import networkx as nx
 import matplotlib.pyplot as plt
-from matplotlib.backends.backend_pdf import PdfPages
 import pickle
 
 
@@ -13,25 +12,29 @@ def load_file(filename):
 	return subgraphs
 
 
-# Drawing
+# Drawing subgraphs
 # Total of 217 separate subgraphs each ranging from 10 to 176 subreddits
 def draw_subgraphs(subgraphs):
 	count = 0
 	num_subgraphs = len(subgraphs)
 	for i in range(num_subgraphs):
-		figure = plt.figure()
 		count += 1.0
 		G = subgraphs[i]
 		pos = nx.spring_layout(G)
 
 		list_nodes = [nodes for nodes in G.nodes()]
-		nx.draw_networkx_nodes(G, pos, list_nodes, node_size=20,
-									node_color = str(count/num_subgraphs))
+		num_nodes = len(list_nodes)
+		num_edges = G.number_of_edges()
 
-		nx.draw_networkx_edges(G, pos, alpha=0.5)
-		plt.show()
+		plt.figure()
+
+		nx.draw(G,pos,node_color=range(num_nodes),node_size=100, cmap=plt.cm.Blues,
+			edge_color=range(num_edges), edge_cmap=plt.cm.Blues)
+
 		graph_name = 'graph' + str(count) + '.png'
-		figure.savefig(graph_name)
+		
+		plt.savefig(graph_name)
+		plt.show()
 
 
 def main():
