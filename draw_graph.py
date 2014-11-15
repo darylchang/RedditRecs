@@ -14,10 +14,11 @@ def load_file(filename):
 
 # Drawing subgraphs
 # Total of 217 separate subgraphs each ranging from 10 to 176 subreddits
+# Limit to 10 subgraphs for testing purposes
 def draw_subgraphs(subgraphs):
 	count = 0
 	num_subgraphs = len(subgraphs)
-	for i in range(num_subgraphs):
+	for i in range(10):
 		count += 1.0
 		G = subgraphs[i]
 		pos = nx.spring_layout(G)
@@ -43,7 +44,7 @@ def get_node_near_point(pos, x_c, y_c):
 	d_min = 1.0
 	n_center = 0
 	for n in pos:
-	    x,y =pos[n]
+	    x,y = pos[n]
 	    d=(x-x_c)**2 + (y-y_c)**2
 	    if d < d_min:
 	        n_center = n
