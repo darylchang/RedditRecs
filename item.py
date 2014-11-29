@@ -23,13 +23,18 @@ for line in open('publicvotes-20101018_votes.dump'):
 	else:
 		featureVectors[sub][user] += int(vote)
 
-for clusterID in range(len(set(partition.values()))):
+for clusterID in range(len(partition)):
 	subs = networkx.nodes(partition[clusterID])
 	for subA in subs:
 		for subB in subs:
 			if subA < subB:
-				featuresA, featuresB = featureVectors[A], featureVectors[B]
-				score = dot(featuresA, featuresB) / (norm(featuresA) * norm(featuresB))
+				featuresA, featuresB = featureVectors[subA], featureVectors[subB]
+				numerator = dot(featuresA, featuresB)
+				denominator = norm(featuresA) * norm(featuresB)
+				if denominator:
+					score = float(numerator) / denominator
+				else:
+					score = 0.
 				print score
 				if subA not in similarityScores[clusterID]:
 					similarityScores[clusterID][subA] = {subB: score}
