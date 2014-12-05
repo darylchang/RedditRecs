@@ -1,5 +1,6 @@
 from collections import defaultdict
 from scipy.sparse import csr_matrix
+import random
 import networkx, pickle
 
 partition = pickle.load(open('final_partition_subgraphs.pickle'))
@@ -28,7 +29,7 @@ def getSimilarUsers(primary, sub, N):
     return topNScores
 
 def testUser(user, sub):
-    similarUsers = getSimilarUsers(user, sub, 1000)
+    similarUsers = getSimilarUsers(user, sub, 100)
     cluster = 0
     for clusterID in range(len(partition)):
         subs = networkx.nodes(partition[clusterID])
@@ -41,8 +42,20 @@ def testUser(user, sub):
             if sub in networkx.nodes(partition[cluster]):
                 commonSubs[sub] += 1
     sortedCommonSubs = sorted(commonSubs.items(), key = lambda x: x[1], reverse=True)
-    print sortedCommonSubs
+    topNRecs = []
     for x in sortedCommonSubs:
-        print x[0] in featureVectors[user]
+        if x[1] > 10:
+            topNRecs.append(x[0])
+    return topNRecs
 
-testUser("17d2a48714c3cbee0257334a6f7a0d7c", "877afdc80d3fe9c0ce9b6d75453531ce")
+successes = 0
+total = 0
+for i in range(0, 100):
+    user = powerUsers[random.randint(0, 890)]
+    sub = random.choice(featureVectors[user].keys())
+    recommendedSubs = testUser(user, sub)
+    for r in recommendedSubs:
+        total += 1
+        if r in featureVectors[user]:
+            successes += 1
+print successes * 1.0 / total

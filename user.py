@@ -25,7 +25,7 @@ for line in open('users_sorted.dump'):
 
 print "finished creating feature vectors"
 
-POWER_USER_THRESHOLD = 10
+POWER_USER_THRESHOLD = 100
 powerUsers = []
 for user in featureVectors:
     if len(featureVectors[user]) > POWER_USER_THRESHOLD:

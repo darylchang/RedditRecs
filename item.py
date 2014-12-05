@@ -23,6 +23,8 @@ for line in open('publicvotes-20101018_votes.dump'):
 	else:
 		featureVectors[sub][user] += int(vote)
 
+print "finished creating feature vectors"
+
 for clusterID in range(len(partition)):
 	subs = networkx.nodes(partition[clusterID])
 	for subA in subs:
