@@ -16,7 +16,7 @@ partition = pickle.load(open('final_partition_subgraphs.pickle'))
 featureVectors = defaultdict(dict)
 similarityScores = defaultdict(dict)
 
-for line in open('publicvotes-20101018_votes.dump'):
+for line in open('users_sorted.dump'):
 	user, link, sub, vote = line.split()
 	if user not in featureVectors[sub]:
 		featureVectors[sub][user] = int(vote)

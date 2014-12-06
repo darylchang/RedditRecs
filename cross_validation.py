@@ -29,7 +29,7 @@ def getSimilarUsers(primary, sub, N):
             break
     return topNScores
 
-def testUser(user, sub, numUsers):
+def testUser(user, sub, similarUsers, percentage):
     similarUsers = getSimilarUsers(user, sub, numUsers)
     cluster = 0
     for clusterID in range(len(partition)):
@@ -44,27 +44,40 @@ def testUser(user, sub, numUsers):
                 commonSubs[sub] += 1
     sortedCommonSubs = sorted(commonSubs.items(), key = lambda x: x[1], reverse=True)
     topNRecs = []
+
+    numRecommended = 0
     for x in sortedCommonSubs:
-        if x[1] > 0.1 * numUsers:
+        if x[1] > percentage * len(similarUsers):
             topNRecs.append(x[0])
-    print len(topNRecs)
+            numRecommended += 1
+
+        if numRecommended == 3:
+            break
+
     return topNRecs
 
-numUserRange = [100, 500, 1000]
-precision = []
+powerUsers = pickle.load(open('power_users.dump'))
+numUsersRange = [100, 1000, 2000, 3000, 4000, 5000]
+precision = defaultdict(list)
 
-for numUsers in numUserRange:
-    successes = 0
-    total = 0
-    for i in range(0, 100):
-        user = powerUsers[random.randint(0, 890)]
-        sub = random.choice(featureVectors[user].keys())
-        recommendedSubs = testUser(user, sub, 100)
+for i in range(0, 100):
+    print i
+    user = powerUsers[random.randint(0, 890)]
+    sub = random.choice(featureVectors[user].keys())
+    similarUsers = getSimilarUsers(user, sub, 5000)
+
+    for numUsers in numUsersRange:
+        similarUsersSubset = similarUsers[:numUsers]
+        recommendedSubs = testUser(user, sub, similarUsersSubset, 0.1)
+
         for r in recommendedSubs:
             total += 1
             if r in featureVectors[user]:
                 successes += 1
-    precision.append(successes * 1.0 / total)
+    if total:       
+        precision[numUsers].append(successes * 1.0 / total)
 
-pyplot.plot(numUserRange, precision)
+y = [sum(precision[numUsers].values())/len(precision[numUsers].values()) for numUsers in numUserRange]
+
+pyplot.plot(numUserRange, y)
 pyplot.show()
