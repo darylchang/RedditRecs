@@ -26,22 +26,21 @@ for line in open('publicvotes-20101018_votes.dump'):
 print "finished creating feature vectors"
 
 for clusterID in range(len(partition)):
-	subs = networkx.nodes(partition[clusterID])
-	for subA in subs:
-		for subB in subs:
-			if subA < subB:
-				featuresA, featuresB = featureVectors[subA], featureVectors[subB]
-				numerator = dot(featuresA, featuresB)
-				denominator = norm(featuresA) * norm(featuresB)
-				if denominator:
-					score = float(numerator) / denominator
-				else:
-					score = 0.
-				print score
-				if subA not in similarityScores[clusterID]:
-					similarityScores[clusterID][subA] = {subB: score}
-				else:
-					similarityScores[clusterID][subA][subB] = score
+    subs = networkx.nodes(partition[clusterID])
+    for subA in subs:
+        for subB in subs:
+            featuresA, featuresB = featureVectors[subA], featureVectors[subB]
+            numerator = dot(featuresA, featuresB)
+            denominator = norm(featuresA) * norm(featuresB)
+            if denominator:
+                score = float(numerator) / denominator
+            else:
+                score = 0.
+            print score
+            if subA not in similarityScores[clusterID]:
+                similarityScores[clusterID][subA] = {subB: score}
+            else:
+                similarityScores[clusterID][subA][subB] = score
 
 pickle.dump(similarityScores, open('similarity_scores.dump', 'w'))
 
