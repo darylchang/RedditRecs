@@ -15,7 +15,6 @@ def getSimilarSubs(primarySub, N):
     if cluster == -1:
         print "error"
 
-    print similarityScores[cluster][primarySub]
     sortedScores = sorted(similarityScores[cluster][primarySub].items(), key = lambda x: x[1], reverse=True)
     topNScores = []
     current = 0
@@ -31,7 +30,7 @@ total = 0
 for i in range(0, 100):
     user = powerUsers[random.randint(0, 890)]
     sub = random.choice(featureVectors[user].keys())
-    recommendedSubs = getSimilarSubs(sub, 10)
+    recommendedSubs = getSimilarSubs(sub, 3)
     for r in recommendedSubs:
         total += 1
         if r in featureVectors[user]:
