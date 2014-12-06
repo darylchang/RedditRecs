@@ -30,7 +30,6 @@ def getSimilarUsers(primary, sub, N):
     return topNScores
 
 def testUser(user, sub, similarUsers, percentage):
-    similarUsers = getSimilarUsers(user, sub, numUsers)
     cluster = 0
     for clusterID in range(len(partition)):
         subs = networkx.nodes(partition[clusterID])
@@ -56,28 +55,56 @@ def testUser(user, sub, similarUsers, percentage):
 
     return topNRecs
 
+# powerUsers = pickle.load(open('power_users.dump'))
+# numUsersRange = [100, 1000, 2000, 3000, 4000, 5000]
+# precision = defaultdict(list)
+
+# for i in range(0, 100):
+#     print i
+#     user = powerUsers[random.randint(0, 890)]
+#     sub = random.choice(featureVectors[user].keys())
+#     similarUsers = getSimilarUsers(user, sub, 5000)
+
+#     for numUsers in numUsersRange:
+#         total, successes = 0., 0.
+#         similarUsersSubset = similarUsers[:numUsers]
+#         recommendedSubs = testUser(user, sub, similarUsersSubset, 0.1)
+
+#         for r in recommendedSubs:
+#             total += 1
+#             if r in featureVectors[user]:
+#                 successes += 1
+#         if total:       
+#             precision[numUsers].append(successes * 1.0 / total)
+
+# y = [sum(precision[numUsers])/len(precision[numUsers]) for numUsers in numUserRange]
+
+# pyplot.plot(numUserRange, y)
+# pyplot.show()
+
+
 powerUsers = pickle.load(open('power_users.dump'))
-numUsersRange = [100, 1000, 2000, 3000, 4000, 5000]
+percentages =[0.02*x for x in range(1,10)]
 precision = defaultdict(list)
 
-for i in range(0, 100):
+for i in range(0, 10):
     print i
     user = powerUsers[random.randint(0, 890)]
     sub = random.choice(featureVectors[user].keys())
-    similarUsers = getSimilarUsers(user, sub, 5000)
+    similarUsers = getSimilarUsers(user, sub, 100)
 
-    for numUsers in numUsersRange:
-        similarUsersSubset = similarUsers[:numUsers]
-        recommendedSubs = testUser(user, sub, similarUsersSubset, 0.1)
+    for percentage in percentages:
+        total, successes = 0., 0.
+        recommendedSubs = testUser(user, sub, similarUsers, percentage)
 
         for r in recommendedSubs:
             total += 1
             if r in featureVectors[user]:
                 successes += 1
-    if total:       
-        precision[numUsers].append(successes * 1.0 / total)
+        if total:       
+            precision[percentage].append(successes * 1.0 / total)
 
-y = [sum(precision[numUsers].values())/len(precision[numUsers].values()) for numUsers in numUserRange]
+y = [sum(precision[percentage])/len(precision[percentage]) for percentage in percentages]
 
-pyplot.plot(numUserRange, y)
+pyplot.plot(percentages, y)
 pyplot.show()
