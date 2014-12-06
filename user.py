@@ -32,4 +32,3 @@ for user in featureVectors:
         powerUsers.append(user)
 
 print "finished identifying power users"
-
