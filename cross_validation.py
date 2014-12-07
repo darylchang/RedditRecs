@@ -55,56 +55,61 @@ def testUser(user, sub, similarUsers, percentage):
 
     return topNRecs
 
-# powerUsers = pickle.load(open('power_users.dump'))
-# numUsersRange = [100, 1000, 2000, 3000, 4000, 5000]
-# precision = defaultdict(list)
-
-# for i in range(0, 100):
-#     print i
-#     user = powerUsers[random.randint(0, 890)]
-#     sub = random.choice(featureVectors[user].keys())
-#     similarUsers = getSimilarUsers(user, sub, 5000)
-
-#     for numUsers in numUsersRange:
-#         total, successes = 0., 0.
-#         similarUsersSubset = similarUsers[:numUsers]
-#         recommendedSubs = testUser(user, sub, similarUsersSubset, 0.1)
-
-#         for r in recommendedSubs:
-#             total += 1
-#             if r in featureVectors[user]:
-#                 successes += 1
-#         if total:       
-#             precision[numUsers].append(successes * 1.0 / total)
-
-# y = [sum(precision[numUsers])/len(precision[numUsers]) for numUsers in numUserRange]
-
-# pyplot.plot(numUserRange, y)
-# pyplot.show()
-
-
 powerUsers = pickle.load(open('power_users.dump'))
-percentages =[0.02*x for x in range(1,10)]
+numUsersRange = [100, 1000, 2000, 3000, 4000, 5000, 10000]
 precision = defaultdict(list)
 
-for i in range(0, 10):
+for i in range(0, 100):
     print i
     user = powerUsers[random.randint(0, 890)]
     sub = random.choice(featureVectors[user].keys())
-    similarUsers = getSimilarUsers(user, sub, 100)
+    similarUsers = getSimilarUsers(user, sub, 10000)
 
-    for percentage in percentages:
+    for numUsers in numUsersRange:
         total, successes = 0., 0.
-        recommendedSubs = testUser(user, sub, similarUsers, percentage)
+        similarUsersSubset = similarUsers[:numUsers]
+        recommendedSubs = testUser(user, sub, similarUsersSubset, 0.1)
 
         for r in recommendedSubs:
             total += 1
             if r in featureVectors[user]:
                 successes += 1
         if total:       
-            precision[percentage].append(successes * 1.0 / total)
+            precision[numUsers].append(successes * 1.0 / total)
 
-y = [sum(precision[percentage])/len(precision[percentage]) for percentage in percentages]
+y = [sum(precision[numUsers])/len(precision[numUsers]) for numUsers in numUsersRange]
 
-pyplot.plot(percentages, y)
+pyplot.plot(numUsersRange, y)
+pyplot.title('Precision of Recommendations vs. Number of Similar Users')
+pyplot.xlabel('Number of Similar Users')
+pyplot.ylabel('Precision of recommendations')
 pyplot.show()
+
+# powerUsers = pickle.load(open('power_users.dump'))
+# percentages =[0.02*x for x in range(1,10)]
+# precision = defaultdict(list)
+
+# for i in range(0, 100):
+#     print i
+#     user = powerUsers[random.randint(0, 890)]
+#     sub = random.choice(featureVectors[user].keys())
+#     similarUsers = getSimilarUsers(user, sub, 100)
+
+#     for percentage in percentages:
+#         total, successes = 0., 0.
+#         recommendedSubs = testUser(user, sub, similarUsers, percentage)
+
+#         for r in recommendedSubs:
+#             total += 1
+#             if r in featureVectors[user]:
+#                 successes += 1
+#         if total:       
+#             precision[percentage].append(successes * 1.0 / total)
+
+# y = [sum(precision[percentage])/len(precision[percentage]) for percentage in percentages]
+
+# pyplot.plot(percentages, y)
+# pyplot.title('Precision of Recommendations vs. Recommendation Threshold')
+# pyplot.xlabel('Recommendation threshold for percentage of users interested')
+# pyplot.ylabel('Precision of recommendations')
+# pyplot.show()
