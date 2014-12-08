@@ -12,17 +12,20 @@ def dot(userA, userB):
 def norm(user):
 	return sum([user[x]**2 for x in user])**0.5
 
-featureVectors = defaultdict(lambda: defaultdict(dict))
+featureVectors = defaultdict(dict)
 subToUser = defaultdict(set)
 
 for line in open('data/users_sorted.dump'):
     user, link, sub, vote = line.split()
     subToUser[sub].add(user)
-    if link not in featureVectors[user][sub]:
-		featureVectors[user][sub][link] = 1
+    if sub not in featureVectors[user]:
+    	featureVectors[user][sub] = {link: 1}
+    elif link not in featureVectors[user][sub]:
+			featureVectors[user][sub][link] = 1
     else:
 		featureVectors[user][sub][link] += 1
 
+pickle.dump(featureVectors, open('feature_vectors.dump','w'))
 print "finished creating feature vectors"
 
 POWER_USER_THRESHOLD = 100

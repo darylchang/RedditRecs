@@ -16,7 +16,7 @@ def getSimilarUsers(primary, sub, N, activityThreshold=0.):
     for other in subToUser[sub]:
         if primary != other:
             if sub not in featureVectors[other]:
-                print "NO"
+                print other, sub, norm(featureVectors[other][sub]),'\n\n\n\n'
             featuresOther = featureVectors[other][sub]
             numerator = dot(featuresPrimary, featuresOther)
             denominator = norm(featuresPrimary) * norm(featuresOther)
