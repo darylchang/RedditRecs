@@ -1,3 +1,2 @@
-*.dump
-data/*
-results/*
+data/users_sorted.dump
+*.txt

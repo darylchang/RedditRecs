@@ -7,7 +7,7 @@ import networkx, pickle
 partition = pickle.load(open('data/final_partition_subgraphs.pickle'))
 subToCluster = pickle.load(open('data/sub_to_cluster_id.dump'))
 featureVectors = pickle.load(open('data/feature_vectors.dump'))
-subToUser = pickle.load(open('sub_to_user.dump'))
+subToUser = pickle.load(open('data/sub_to_user.dump'))
 
 def getSimilarUsers(primary, sub, N, activityThreshold=0.):
     featuresPrimary = featureVectors[primary][sub]

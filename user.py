@@ -25,8 +25,8 @@ for line in open('data/users_sorted.dump'):
     else:
 		featureVectors[user][sub][link] += 1
 
-pickle.dump(featureVectors, open('feature_vectors.dump','w'))
-pickle.dummp(subToUser, open('sub_to_user.dump','w'))
+pickle.dump(featureVectors, open('data/feature_vectors.dump','wb'))
+pickle.dump(subToUser, open('data/sub_to_user.dump','wb'))
 print "finished creating feature vectors"
 
 POWER_USER_THRESHOLD = 100
@@ -35,5 +35,5 @@ for user in featureVectors:
     if len(featureVectors[user]) > POWER_USER_THRESHOLD:
         powerUsers.append(user)
 
-pickle.dump(powerUsers, open('data/power_users.dump', 'w'))
+pickle.dump(powerUsers, open('data/power_users.dump', 'wb'))
 print "finished identifying power users"
