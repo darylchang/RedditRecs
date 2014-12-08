@@ -15,7 +15,7 @@ def norm(user):
 featureVectors = defaultdict(lambda: defaultdict(dict))
 subToUser = defaultdict(set)
 
-for line in open('users_sorted.dump'):
+for line in open('data/users_sorted.dump'):
     user, link, sub, vote = line.split()
     subToUser[sub].add(user)
     if link not in featureVectors[user][sub]:
@@ -31,4 +31,5 @@ for user in featureVectors:
     if len(featureVectors[user]) > POWER_USER_THRESHOLD:
         powerUsers.append(user)
 
+pickle.dump(powerUsers, open('data/power_users.dump', 'w'))
 print "finished identifying power users"

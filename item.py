@@ -12,11 +12,11 @@ def dot(subA, subB):
 def norm(sub):
 	return sum([sub[x]**2 for x in sub])**0.5
 
-partition = pickle.load(open('final_partition_subgraphs.pickle'))
+partition = pickle.load(open('data/final_partition_subgraphs.pickle'))
 featureVectors = defaultdict(dict)
 similarityScores = defaultdict(dict)
 
-for line in open('users_sorted.dump'):
+for line in open('data/users_sorted.dump'):
 	user, link, sub, vote = line.split()
 	if user not in featureVectors[sub]:
 		featureVectors[sub][user] = int(vote)
@@ -42,5 +42,5 @@ for clusterID in range(len(partition)):
             else:
                 similarityScores[clusterID][subA][subB] = score
 
-pickle.dump(similarityScores, open('similarity_scores.dump', 'w'))
+pickle.dump(similarityScores, open('data/similarity_scores.dump', 'w'))
 

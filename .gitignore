@@ -1,1 +1,3 @@
 *.dump
+data/*
+results/*

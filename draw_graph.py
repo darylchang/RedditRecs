@@ -53,7 +53,7 @@ def get_node_near_point(pos, x_c, y_c):
 
 
 def main():
-	subgraphs = load_file('final_partition_subgraphs.pickle')
+	subgraphs = load_file('data/final_partition_subgraphs.pickle')
 	draw_subgraphs(subgraphs)
 
 

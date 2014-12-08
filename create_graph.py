@@ -1,7 +1,7 @@
 from random import randint
 import gzip
 
-nodes = open('subs_unique.dump', 'r')
+nodes = open('data/subs_unique.dump', 'r')
 keys = []
 for sub in nodes: keys.append(sub.rstrip('\n'))
 
@@ -17,7 +17,7 @@ edge_map = dict(dict_pairs)
 
 print "Done with edge_map skeleton"
 
-users = open('users_sorted.dump', 'r')
+users = open('data/users_sorted.dump', 'r')
 current_subs = set()
 current_user = '0'
 for line in users:
@@ -57,7 +57,7 @@ for s1 in keys:
 print "Done thresholding edge_map"
 
 # Write edge map to an edge list file
-f = gzip.open('edge_list_smaller.txt.gz', 'w')
+f = gzip.open('data/edge_list.txt', 'w')
 for s1 in edge_map_new:
     for s2 in edge_map_new[s1]:
         if s2 > s1 and edge_map_new[s1][s2] == 1:

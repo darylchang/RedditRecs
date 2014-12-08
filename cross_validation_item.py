@@ -3,8 +3,8 @@ from scipy.sparse import csr_matrix
 import random
 import networkx, pickle
 
-partition = pickle.load(open('final_partition_subgraphs.pickle'))
-similarityScores = pickle.load(open('similarity_scores.dump', 'r'))
+partition = pickle.load(open('data/final_partition_subgraphs.pickle'))
+similarityScores = pickle.load(open('data/similarity_scores.dump', 'r'))
 
 def getSimilarSubs(primarySub, N):
     cluster = -1

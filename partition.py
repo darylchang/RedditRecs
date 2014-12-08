@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 import pickle
 
 print 'Reading edge list'
-G = nx.read_adjlist('edge_list_smaller.txt')
+G = nx.read_adjlist('data/edge_list.txt')
 
 # First compute the best partition
 print 'Partitioning'
@@ -40,7 +40,7 @@ while todo:
 			print "expanding sub with l=", len(subgraph.nodes())
 			todo.append(subgraph)
 
-pickle.dump(final, open('final_partition_subgraphs.pickle', 'w'))
+pickle.dump(final, open('data/final_partition_subgraphs.pickle', 'w'))
 
 print [len(graph.nodes()) for graph in final]
 print deleted
