@@ -26,6 +26,7 @@ for line in open('data/users_sorted.dump'):
 		featureVectors[user][sub][link] += 1
 
 pickle.dump(featureVectors, open('feature_vectors.dump','w'))
+pickle.dummp(subToUser, open('sub_to_user.dump','w'))
 print "finished creating feature vectors"
 
 POWER_USER_THRESHOLD = 100
